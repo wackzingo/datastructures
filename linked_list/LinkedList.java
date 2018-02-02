@@ -1,4 +1,36 @@
-public class LinkedList<T> implements iterable {
+import java.util.*;
+
+public class LinkedList<T> implements Iterable<T> {
+
+    public static void main(String[] args) {
+      LinkedList<String> list = new LinkedList<String>();
+      list.addLast("I");
+      list.addLast("t");
+      list.addLast(" ");
+      list.addLast("w");
+      list.addLast("o");
+      list.addLast("r");
+      list.addLast("k");
+      list.addLast("s");
+
+      System.out.println(list);
+
+      Iterator itr = list.iterator();
+
+      while(itr.hasNext()) {
+        System.out.print(itr.next() + " ");
+      }
+
+      list.removeFirst();
+      System.out.println();
+
+      itr = list.iterator();
+      while(itr.hasNext()) {
+        System.out.print(itr.next() + " ");
+      }
+
+      System.out.println("\nDone for now");
+    }
 
     private Node<T> head;
 
@@ -28,7 +60,8 @@ public class LinkedList<T> implements iterable {
     * Returns data stored at first element in the list.
     */
     public T getFirst() {
-      if(head == null) throw NoSuchElementException();
+      if(head == null) throw new NoSuchElementException();
+
       return head.data;
     }
 
@@ -52,7 +85,7 @@ public class LinkedList<T> implements iterable {
         while(tmp.next != null) {
           tmp = tmp.next;
         }
-        tmp.next = new Node(data, null);
+        tmp.next = new Node<T>(data, null);
       }
     }
 
@@ -60,7 +93,7 @@ public class LinkedList<T> implements iterable {
     * Returns data stored at the last element in the list.
     */
     public T getLast() {
-      if(head == null) throw NoSuchElementException();
+      if(head == null) throw new NoSuchElementException();
 
       Node<T> tmp = head;
 
@@ -95,7 +128,7 @@ public class LinkedList<T> implements iterable {
     * Get data located at pos i in the list.
     */
     public T get(int pos) {
-      if(head == null)  throw IndexOutOfBoundsException();
+      if(head == null)  throw new IndexOutOfBoundsException();
 
       Node<T> tmp = head;
 
@@ -103,7 +136,7 @@ public class LinkedList<T> implements iterable {
         tmp = tmp.next;
       }
 
-      if(tmp.next == null) throw IndexOutOfBoundsException();
+      if(tmp.next == null) throw new IndexOutOfBoundsException();
 
       return tmp.data;
     }
@@ -131,7 +164,7 @@ public class LinkedList<T> implements iterable {
       private T data;
       private Node<T> next;
 
-      public Node(T data, Node next) {
+      public Node(T data, Node<T> next) {
         this.data = data;
         this.next = next;
       }
@@ -143,23 +176,24 @@ public class LinkedList<T> implements iterable {
     }
 
     private class LinkedListIterator implements Iterator<T> {
-        private Node<T> next;
+        private Node<T> nextNode;
+
         public LinkedListIterator() {
-          return head;
+          nextNode = head;
         }
 
         public boolean hasNext() {
-          return head != null;
+          return nextNode != null;
         }
 
         public T next() {
-          if(!hasNext()) throw NoSuchElementException();
+          if(!hasNext()) throw new NoSuchElementException();
 
-          T next = next.data;
-          next = next.next;
-          return next;
+          T res = nextNode.data;
+          nextNode = nextNode.next;
+          return res;
         }
 
-        public void remove() { throw UnsupportedOperationException();}
+        public void remove() { throw new UnsupportedOperationException();}
     }
 }
